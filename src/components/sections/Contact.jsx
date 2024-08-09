@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import emailjs from "@emailjs/browser";
 import EarthCanvas from "../canvas/Earth";
@@ -127,23 +127,28 @@ const ContactButton = styled.input`
 
 const Contact = () => {
   const form = useRef();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true); // Set loading state to true
+
     emailjs
       .sendForm(
-        "service_tox7kqs",
-        "template_nv7k7mj",
+        "service_91uxa5w",
+        "template_naq2bzg",
         form.current,
-        "SybVGsYS52j2TfLbi"
+        "y6fr8Xf2VC9L-sRiX"
       )
       .then(
         (result) => {
           alert("Message Sent");
-          form.current.resut();
+          form.current.reset();
+          setIsLoading(false); // Set loading state to false
         },
         (error) => {
           alert(error);
+          setIsLoading(false); // Set loading state to false
         }
       );
   };
@@ -156,13 +161,13 @@ const Contact = () => {
         <Desc>
           Feel free to reach out to me for any questions or opportunities!
         </Desc>
-        <ContactForm onSubmit={handleSubmit}>
+        <ContactForm ref={form} onSubmit={handleSubmit}>
           <ContactTitle>Email Me 🚀</ContactTitle>
           <ContactInput placeholder="Your Email" name="from_email" />
           <ContactInput placeholder="Your Name" name="from_name" />
           <ContactInput placeholder="Subject" name="subject" />
           <ContactInputMessage placeholder="Message" name="message" rows={4} />
-          <ContactButton type="submit" value="Send" />
+          <ContactButton type="submit" value="Send" disabled={isLoading} />
         </ContactForm>
       </Wrapper>
     </Container>
